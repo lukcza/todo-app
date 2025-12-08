@@ -1,0 +1,32 @@
+BEGIN;
+
+--
+-- ACTION CREATE TABLE
+--
+CREATE TABLE "tasks" (
+    "id" bigserial PRIMARY KEY,
+    "title" text NOT NULL,
+    "description" text NOT NULL,
+    "isCompleted" boolean NOT NULL,
+    "createdAt" timestamp without time zone NOT NULL
+);
+
+
+--
+-- MIGRATION VERSION FOR todo_app
+--
+INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
+    VALUES ('todo_app', '20251208124311206', now())
+    ON CONFLICT ("module")
+    DO UPDATE SET "version" = '20251208124311206', "timestamp" = now();
+
+--
+-- MIGRATION VERSION FOR serverpod
+--
+INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
+    VALUES ('serverpod', '20240516151843329', now())
+    ON CONFLICT ("module")
+    DO UPDATE SET "version" = '20240516151843329', "timestamp" = now();
+
+
+COMMIT;
