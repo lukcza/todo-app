@@ -12,6 +12,7 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'greeting.dart' as _i2;
 import 'task.dart' as _i3;
+import 'package:todo_app_client/src/protocol/task.dart' as _i4;
 export 'greeting.dart';
 export 'task.dart';
 export 'client.dart';
@@ -40,6 +41,9 @@ class Protocol extends _i1.SerializationManager {
     }
     if (t == _i1.getType<_i3.Task?>()) {
       return (data != null ? _i3.Task.fromJson(data) : null) as T;
+    }
+    if (t == List<_i4.Task>) {
+      return (data as List).map((e) => deserialize<_i4.Task>(e)).toList() as T;
     }
     return super.deserialize<T>(data, t);
   }
