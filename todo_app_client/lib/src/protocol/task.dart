@@ -18,6 +18,7 @@ abstract class Task implements _i1.SerializableModel {
     required this.description,
     required this.isCompleted,
     required this.createdAt,
+    required this.sortOrder,
   });
 
   factory Task({
@@ -26,6 +27,7 @@ abstract class Task implements _i1.SerializableModel {
     required String description,
     required bool isCompleted,
     required DateTime createdAt,
+    required int sortOrder,
   }) = _TaskImpl;
 
   factory Task.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -36,6 +38,7 @@ abstract class Task implements _i1.SerializableModel {
       isCompleted: jsonSerialization['isCompleted'] as bool,
       createdAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      sortOrder: jsonSerialization['sortOrder'] as int,
     );
   }
 
@@ -52,6 +55,8 @@ abstract class Task implements _i1.SerializableModel {
 
   DateTime createdAt;
 
+  int sortOrder;
+
   /// Returns a shallow copy of this [Task]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -61,6 +66,7 @@ abstract class Task implements _i1.SerializableModel {
     String? description,
     bool? isCompleted,
     DateTime? createdAt,
+    int? sortOrder,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -70,6 +76,7 @@ abstract class Task implements _i1.SerializableModel {
       'description': description,
       'isCompleted': isCompleted,
       'createdAt': createdAt.toJson(),
+      'sortOrder': sortOrder,
     };
   }
 
@@ -88,12 +95,14 @@ class _TaskImpl extends Task {
     required String description,
     required bool isCompleted,
     required DateTime createdAt,
+    required int sortOrder,
   }) : super._(
           id: id,
           title: title,
           description: description,
           isCompleted: isCompleted,
           createdAt: createdAt,
+          sortOrder: sortOrder,
         );
 
   /// Returns a shallow copy of this [Task]
@@ -106,6 +115,7 @@ class _TaskImpl extends Task {
     String? description,
     bool? isCompleted,
     DateTime? createdAt,
+    int? sortOrder,
   }) {
     return Task(
       id: id is int? ? id : this.id,
@@ -113,6 +123,7 @@ class _TaskImpl extends Task {
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       createdAt: createdAt ?? this.createdAt,
+      sortOrder: sortOrder ?? this.sortOrder,
     );
   }
 }
