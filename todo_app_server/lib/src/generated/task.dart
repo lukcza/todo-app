@@ -18,6 +18,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     required this.description,
     required this.isCompleted,
     required this.createdAt,
+    required this.sortOrder,
   });
 
   factory Task({
@@ -26,6 +27,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     required String description,
     required bool isCompleted,
     required DateTime createdAt,
+    required int sortOrder,
   }) = _TaskImpl;
 
   factory Task.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -36,6 +38,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       isCompleted: jsonSerialization['isCompleted'] as bool,
       createdAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      sortOrder: jsonSerialization['sortOrder'] as int,
     );
   }
 
@@ -54,6 +57,8 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
 
   DateTime createdAt;
 
+  int sortOrder;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -66,6 +71,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
     String? description,
     bool? isCompleted,
     DateTime? createdAt,
+    int? sortOrder,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -75,6 +81,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       'description': description,
       'isCompleted': isCompleted,
       'createdAt': createdAt.toJson(),
+      'sortOrder': sortOrder,
     };
   }
 
@@ -86,6 +93,7 @@ abstract class Task implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       'description': description,
       'isCompleted': isCompleted,
       'createdAt': createdAt.toJson(),
+      'sortOrder': sortOrder,
     };
   }
 
@@ -128,12 +136,14 @@ class _TaskImpl extends Task {
     required String description,
     required bool isCompleted,
     required DateTime createdAt,
+    required int sortOrder,
   }) : super._(
           id: id,
           title: title,
           description: description,
           isCompleted: isCompleted,
           createdAt: createdAt,
+          sortOrder: sortOrder,
         );
 
   /// Returns a shallow copy of this [Task]
@@ -146,6 +156,7 @@ class _TaskImpl extends Task {
     String? description,
     bool? isCompleted,
     DateTime? createdAt,
+    int? sortOrder,
   }) {
     return Task(
       id: id is int? ? id : this.id,
@@ -153,6 +164,7 @@ class _TaskImpl extends Task {
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       createdAt: createdAt ?? this.createdAt,
+      sortOrder: sortOrder ?? this.sortOrder,
     );
   }
 }
@@ -175,6 +187,10 @@ class TaskTable extends _i1.Table<int?> {
       'createdAt',
       this,
     );
+    sortOrder = _i1.ColumnInt(
+      'sortOrder',
+      this,
+    );
   }
 
   late final _i1.ColumnString title;
@@ -185,6 +201,8 @@ class TaskTable extends _i1.Table<int?> {
 
   late final _i1.ColumnDateTime createdAt;
 
+  late final _i1.ColumnInt sortOrder;
+
   @override
   List<_i1.Column> get columns => [
         id,
@@ -192,6 +210,7 @@ class TaskTable extends _i1.Table<int?> {
         description,
         isCompleted,
         createdAt,
+        sortOrder,
       ];
 }
 

@@ -27,8 +27,10 @@ class DeleteTaskEvent extends TaskEvent{
   List<Object?> get props => [task];
 }
 class ReorderTasksEvent extends TaskEvent{
+  final int oldIndex;
+  final int newIndex;
   final List<Task> tasks;
-  ReorderTasksEvent(this.tasks);
+  ReorderTasksEvent(this.tasks, this.oldIndex, this.newIndex);
   @override
   List<Object?> get props => [tasks];
 }
