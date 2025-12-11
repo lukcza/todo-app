@@ -16,4 +16,9 @@ class TaskRepository {
   Future<void> deleteTask(Task task) async {
     await client.task.deleteTask(task);
   }
+  Future<void> reorderTasks(List<Task> tasks) async {
+    for (var task in tasks) {
+      await client.task.updateTask(task);
+    }
+  }
 }
