@@ -1,8 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_bloc.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_event.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_state.dart';
+import 'package:todo_app_flutter/features/tasks/view/pages/task_item_add_page.dart';
 import 'package:todo_app_flutter/features/tasks/view/widgets/task_list_item.dart';
 
 class TaskListPage extends StatelessWidget {
@@ -41,7 +43,7 @@ class TaskListPage extends StatelessWidget {
                   context.read<TaskBloc>().add(DeleteTaskEvent(task));
                 },
                 onEdit: () {
-                  // Navigate to edit page or show edit dialog
+                  // Navigate to edit page (not implemented here)
                 },
               );
               
@@ -57,6 +59,15 @@ class TaskListPage extends StatelessWidget {
             }
           );
         },
+      ),
+      floatingActionButton: OpenContainer(
+        transitionDuration: const Duration(milliseconds: 500),
+        closedShape: const CircleBorder(),
+        closedBuilder: (context,action)=> FloatingActionButton(
+          onPressed: action,
+          child: const Icon(Icons.add),
+        ),
+        openBuilder: (context, action) => const TaskItemAddPage(),
       ),
     );
   }
