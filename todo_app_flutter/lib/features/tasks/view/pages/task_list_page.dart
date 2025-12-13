@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app_client/todo_app_client.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_bloc.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_event.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_state.dart';
@@ -25,12 +26,12 @@ class TaskListPage extends StatelessWidget {
           } else if (state.tasks.isEmpty) {
             return const Center(child: Text('No tasks available'));
           }
-
           return ReorderableListView.builder(
             itemCount: state.tasks.length,
             itemBuilder: (context, index) {
               final task = state.tasks[index];
               return TaskListItem(
+                key: ValueKey(task.id),
                 id: task.id!,
                 title: task.title,
                 description: task.description,
@@ -55,7 +56,11 @@ class TaskListPage extends StatelessWidget {
               final tasks = List.of(state.tasks);
               final task = tasks.removeAt(oldIndex);
               tasks.insert(newIndex, task);
-              context.read<TaskBloc>().add(ReorderTasksEvent(tasks, oldIndex, newIndex));
+              final reorderedTasks = <Task>[];
+              for (int i = 0; i < tasks.length; i++) {
+                reorderedTasks.add(tasks[i].copyWith(sortOrder: i));
+              }
+              context.read<TaskBloc>().add(ReorderTasksEvent(reorderedTasks, oldIndex, newIndex));
             }
           );
         },
@@ -63,6 +68,10 @@ class TaskListPage extends StatelessWidget {
       floatingActionButton: OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
         closedShape: const CircleBorder(),
+        transitionType: ContainerTransitionType.fade,
+        onClosed: (data) {
+          // Nie ładuj tasków, nowy task jest już w stanie
+        },
         closedBuilder: (context,action)=> FloatingActionButton(
           onPressed: action,
           child: const Icon(Icons.add),
