@@ -38,7 +38,6 @@ class _TaskItemAddPageState extends State<TaskItemAddPage> {
       ),
       body: BlocListener<TaskBloc, TaskState>(
         listenWhen: (previous, current) {
-          // Zamykaj tylko gdy liczba tasków się zwiększyła
           return current.tasks.length > previous.tasks.length;
         },
         listener: (context, state) {

@@ -20,20 +20,29 @@ class TaskBloc extends Bloc<TaskEvent, TaskState>{
 
     on<DeleteTaskEvent>((event, emit) async {
       final updatedTasks = List<Task>.from(state.tasks)..remove(event.task);
-      await _taskRepository.deleteTask(event.task);
-      emit(state.copyWith(updatedTasks, state.status));
+      try{
+        await _taskRepository.deleteTask(event.task);
+        emit(state.copyWith(updatedTasks, state.status));
+      } catch (e) {
+        print(e);
+        emit(state.copyWith(state.tasks, TaskStatus.failure));
+      }
     });
-    on<UpdateTaskEvent>((event, emit) {
+    on<UpdateTaskEvent>((event, emit) async {
       final updatedTasks = state.tasks.map((task) {
         return task.id == event.task.id ? event.task : task;
       }).toList();
-      _taskRepository.updateTask(event.task);
-      emit(state.copyWith(updatedTasks, state.status));
+      try{
+        await _taskRepository.updateTask(event.task);
+        emit(state.copyWith(updatedTasks, TaskStatus.initial));
+      } catch (e){
+        print(e);
+        emit(state.copyWith(state.tasks, TaskStatus.failure));
+      }
     });
     on<LoadTasksEvent>((event, emit) async {
       emit(state.copyWith(state.tasks, TaskStatus.loading));
       try {
-
         final tasks = await _taskRepository.getAllTasks();
         emit(state.copyWith(tasks, TaskStatus.success));
       } catch (_) {

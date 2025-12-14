@@ -6,6 +6,7 @@ import 'package:todo_app_flutter/features/tasks/bloc/task_bloc.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_event.dart';
 import 'package:todo_app_flutter/features/tasks/bloc/task_state.dart';
 import 'package:todo_app_flutter/features/tasks/view/pages/task_item_add_page.dart';
+import 'package:todo_app_flutter/features/tasks/view/pages/task_item_edit_dialog.dart';
 import 'package:todo_app_flutter/features/tasks/view/widgets/task_list_item.dart';
 
 class TaskListPage extends StatelessWidget {
@@ -16,6 +17,7 @@ class TaskListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task List'),
+        
       ),
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
@@ -44,7 +46,11 @@ class TaskListPage extends StatelessWidget {
                   context.read<TaskBloc>().add(DeleteTaskEvent(task));
                 },
                 onEdit: () {
-                  // Navigate to edit page (not implemented here)
+                  showDialog(
+                    context: context,
+                    builder: (context) => TaskItemEditDialog(task: task),
+                  );
+                  context.read<TaskBloc>().add(LoadTasksEvent());
                 },
               );
               
@@ -69,9 +75,6 @@ class TaskListPage extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 500),
         closedShape: const CircleBorder(),
         transitionType: ContainerTransitionType.fade,
-        onClosed: (data) {
-          // Nie ładuj tasków, nowy task jest już w stanie
-        },
         closedBuilder: (context,action)=> FloatingActionButton(
           onPressed: action,
           child: const Icon(Icons.add),
