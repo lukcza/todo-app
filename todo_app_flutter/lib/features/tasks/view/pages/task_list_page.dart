@@ -28,7 +28,6 @@ class TaskListPage extends StatelessWidget {
             icon: Icon(_isAplbethical ? Icons.arrow_upward:Icons.arrow_downward),
             onPressed: () {
               context.read<TaskBloc>().add(SortTasksEvent(_isAplbethical));
-              //context.read<TaskBloc>().add(LoadTasksEvent());
               _isAplbethical = !_isAplbethical;
             },
           )
