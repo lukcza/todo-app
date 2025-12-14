@@ -31,12 +31,13 @@ class MyApp extends StatelessWidget {
           taskRepository: context.read<TaskRepository>()
           )..add(LoadTasksEvent())),
       ], child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Todo App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           useMaterial3: true,
         ),
-        home: const TaskListPage(),
+        home: TaskListPage(),
       )),
     );
   }

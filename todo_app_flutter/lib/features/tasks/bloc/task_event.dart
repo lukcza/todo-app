@@ -34,3 +34,9 @@ class ReorderTasksEvent extends TaskEvent{
   @override
   List<Object?> get props => [tasks];
 }
+class SortTasksEvent extends TaskEvent{
+  final bool isAplbethical;
+  SortTasksEvent(this.isAplbethical);
+  @override
+  List<Object?> get props => [isAplbethical];
+}

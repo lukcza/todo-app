@@ -10,14 +10,29 @@ import 'package:todo_app_flutter/features/tasks/view/pages/task_item_edit_dialog
 import 'package:todo_app_flutter/features/tasks/view/widgets/task_list_item.dart';
 
 class TaskListPage extends StatelessWidget {
-  const TaskListPage({Key? key}) : super(key: key);
-
+  TaskListPage({Key? key}) : super(key: key);
+  bool _isAplbethical = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task List'),
-        
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              context.read<TaskBloc>().add(LoadTasksEvent());
+            },
+          ),
+          IconButton(
+            icon: Icon(_isAplbethical ? Icons.arrow_upward:Icons.arrow_downward),
+            onPressed: () {
+              context.read<TaskBloc>().add(SortTasksEvent(_isAplbethical));
+              //context.read<TaskBloc>().add(LoadTasksEvent());
+              _isAplbethical = !_isAplbethical;
+            },
+          )
+        ],
       ),
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {

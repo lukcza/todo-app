@@ -4,15 +4,17 @@ import 'package:todo_app_flutter/features/tasks/data/task_repository.dart';
 import 'task_event.dart';
 import 'task_state.dart';
 
-class TaskBloc extends Bloc<TaskEvent, TaskState>{
+class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final TaskRepository _taskRepository;
-  TaskBloc({required TaskRepository taskRepository}) : _taskRepository = taskRepository, super(TaskState()){
+  TaskBloc({required TaskRepository taskRepository})
+      : _taskRepository = taskRepository,
+        super(TaskState()) {
     on<AddTaskEvent>((event, emit) async {
-      try{
+      try {
         final savedTask = await _taskRepository.addTask(event.task);
         final updatedTasks = List<Task>.from(state.tasks)..add(savedTask);
         emit(state.copyWith(updatedTasks, TaskStatus.initial));
-      } catch (e){
+      } catch (e) {
         print(e);
         emit(state.copyWith(state.tasks, TaskStatus.failure));
       }
@@ -20,7 +22,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState>{
 
     on<DeleteTaskEvent>((event, emit) async {
       final updatedTasks = List<Task>.from(state.tasks)..remove(event.task);
-      try{
+      try {
         await _taskRepository.deleteTask(event.task);
         emit(state.copyWith(updatedTasks, state.status));
       } catch (e) {
@@ -32,10 +34,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState>{
       final updatedTasks = state.tasks.map((task) {
         return task.id == event.task.id ? event.task : task;
       }).toList();
-      try{
+      try {
         await _taskRepository.updateTask(event.task);
         emit(state.copyWith(updatedTasks, TaskStatus.initial));
-      } catch (e){
+      } catch (e) {
         print(e);
         emit(state.copyWith(state.tasks, TaskStatus.failure));
       }
@@ -57,6 +59,21 @@ class TaskBloc extends Bloc<TaskEvent, TaskState>{
         print('Error reordering tasks: $e');
         emit(state.copyWith(state.tasks, TaskStatus.failure));
       }
+    });
+    on<SortTasksEvent>((event, emit) async {
+      final sortedTasks = List<Task>.from(state.tasks);
+      if (event.isAplbethical) {
+        sortedTasks.sort((a, b) => a.title.compareTo(b.title));
+      } else {
+        sortedTasks.sort((a, b) => b.title.compareTo(a.title));
+      }
+      try{
+        await _taskRepository.reorderTasks(sortedTasks);
+      } catch (e) {
+        print('Error sorting tasks: $e');
+        emit(state.copyWith(state.tasks, TaskStatus.failure));  
+      }
+      emit(state.copyWith(sortedTasks, state.status));
     });
   }
 }
