@@ -23,6 +23,7 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: isCompleted ? Colors.grey[200] : null,
       leading: Checkbox(
         value: isCompleted,
         onChanged: (_) => onToggle(),
