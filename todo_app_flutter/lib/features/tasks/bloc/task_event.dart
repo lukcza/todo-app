@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:todo_app_client/todo_app_client.dart';
+import 'task_state.dart';
 
 abstract class TaskEvent extends Equatable{}
 
@@ -33,4 +34,16 @@ class ReorderTasksEvent extends TaskEvent{
   ReorderTasksEvent(this.tasks, this.oldIndex, this.newIndex);
   @override
   List<Object?> get props => [tasks];
+}
+class SortTasksEvent extends TaskEvent{
+  SortOrder order;
+  SortTasksEvent(this.order);
+  @override
+  List<Object?> get props => [order];
+}
+class VisibilityToggleEvent extends TaskEvent{
+  bool showCompleted;
+  VisibilityToggleEvent(this.showCompleted);
+  @override
+  List<Object?> get props => [showCompleted];
 }

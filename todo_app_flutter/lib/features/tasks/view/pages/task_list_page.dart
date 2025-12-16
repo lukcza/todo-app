@@ -10,14 +10,52 @@ import 'package:todo_app_flutter/features/tasks/view/pages/task_item_edit_dialog
 import 'package:todo_app_flutter/features/tasks/view/widgets/task_list_item.dart';
 
 class TaskListPage extends StatelessWidget {
-  const TaskListPage({Key? key}) : super(key: key);
-
+  TaskListPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task List'),
-        
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              context.read<TaskBloc>().add(LoadTasksEvent());
+            },
+          ),
+          BlocBuilder<TaskBloc, TaskState>(
+            //buildWhen: (previous, current) => previous.showCopmplitedTasks != current.showCopmplitedTasks,
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(state.showCopmplitedTasks ? Icons.visibility : Icons.visibility_off ),
+                onPressed: (){
+                  context.read<TaskBloc>().add(VisibilityToggleEvent(!state.showCopmplitedTasks));
+                },
+              );
+            },
+          ),
+          BlocBuilder<TaskBloc, TaskState>(
+            //buildWhen: (previous, current) => previous.sortOrder != current.sortOrder,
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(state.sortOrder == SortOrder.descending ? Icons.arrow_downward : Icons.arrow_upward ),
+                onPressed: (){
+                  switch(state.sortOrder){
+                    case SortOrder.ascending:
+                      context.read<TaskBloc>().add(SortTasksEvent(SortOrder.descending));
+                    break;
+                    case SortOrder.descending:
+                      context.read<TaskBloc>().add(SortTasksEvent(SortOrder.ascending));
+                    break;
+                    case SortOrder.custom:
+                      context.read<TaskBloc>().add(SortTasksEvent(SortOrder.ascending));
+                    break;
+                  }
+                },
+              );
+            },
+          )
+        ],
       ),
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
