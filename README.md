@@ -52,12 +52,12 @@ cd todo_app_flutter
 flutter run
 ```
 
-## Struktura repozytorium
-todo_app_server: Warstwa backendowa (modele .yaml, logika API).
+## 📁 Struktura repozytorium
+* **todo_app_server:** Warstwa backendowa (modele .yaml, logika API).
 
-todo_app_client: Wygenerowany kod klienta (most łączący Fluttera z serwerem).
+* **todo_app_client:** Wygenerowany kod klienta (most łączący Fluttera z serwerem).
 
-todo_app_flutter: Aplikacja mobilna z implementacją BLoC i UI.
+* **todo_app_flutter:** Aplikacja mobilna z implementacją BLoC i UI.
 
 ---
 👤 **Autor**
